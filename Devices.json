@@ -1,14 +1,12 @@
 {
-  "devices": [
-    {
-      "name": "iOS",
-      "width": 320,
-      "height": 480
-    },
-    {
-      "name": "Android",
-      "width": 320,
-      "height": 480
-    }
-  ]
+  "iOS":{
+  	"name": "iOS",
+  	"width":320,
+  	"height":480
+  },
+  "Android":{
+  	"name":"Android",
+  	"width":320,
+  	"height":480  
+  }
 }
