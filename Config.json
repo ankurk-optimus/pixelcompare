@@ -1,0 +1,29 @@
+{
+  "project-name": "TeamFit",
+  "subject": [
+    {
+      "page-name": "Login_Page",
+      "page-url": "www.google.co.in",
+      "devices": [
+        "iOS",
+        "Android"
+      ]
+    },
+    {
+      "page-name": "Page1",
+      "page-url": "www.google.co.in",
+      "devices": [
+        "iOS",
+        "Android"
+      ]
+    },
+    {
+      "page-name": "Page2",
+      "page-url": "www.google.co.in",
+      "devices": [
+        "iOS",
+        "Android"
+      ]
+    }
+  ]
+}
