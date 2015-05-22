@@ -1,7 +1,7 @@
 'use strict';
 
-HomeModule.controller('HomeCtrl', ['$scope',
-	function($scope) {
-		
+HomeModule.controller('HomeCtrl', ['$scope', 'projects',
+	function($scope, projects) {
+		$scope.projects = projects;
 	}
 ]);

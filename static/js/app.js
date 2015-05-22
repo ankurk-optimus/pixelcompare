@@ -4,12 +4,19 @@
 	// configure our routes
 	PixelCompareApp.config(['$routeProvider', function($routeProvider) {
 
+        function getProjects(HomeFactory){
+            return HomeFactory.getProjects();
+        }
+
 		$routeProvider
 
 		// route for the home page
 		.when('/', {
 			templateUrl: '/static/js/home/home.html',
-			controller: 'HomeCtrl'
+			controller: 'HomeCtrl',
+            resolve:{
+                projects:getProjects
+            }
 		})
 
         .when('/new_project', {

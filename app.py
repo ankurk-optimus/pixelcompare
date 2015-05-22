@@ -27,7 +27,7 @@ def get_projects():
     for filename in os.listdir('./projects'):
         if os.path.isdir(os.path.join('./projects', filename)):
             projects.append(filename)
-    return api.create_json_response({"status":"success", "error_code":0, "data":projects})
+    return api.create_json_response({"status":"success", "error_code":0, "projects":projects})
 
 if __name__ == '__main__':
     app.run(debug=True)

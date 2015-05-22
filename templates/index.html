@@ -11,12 +11,16 @@
 	<link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../static/bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="../static/stylesheets/custom.css">
+	<link rel="stylesheet" href="../static/bower_components/jsoneditor/dist/jsoneditor.min.css">
 	<script src="../static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
 	<script src="../static/bower_components/angular/angular.min.js"></script>
 	<script src="../static/bower_components/angular-route/angular-route.min.js"></script>
 	<script src="../static/bower_components/ngstorage/ngStorage.min.js"></script>
 	<script src="../static/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
+
+	<script src="../static/bower_components/jsoneditor/dist/jsoneditor.min.js"></script>
+	<script src="../static/bower_components/ng-jsoneditor/ng-jsoneditor.js"></script>
 
 	<script src="../static/js/app.js"></script>
 
@@ -30,7 +34,8 @@
 
 	<!-- Factories -->
 
-
+	<script src="../static/js/home/home.factory.js"></script>
+	<script src="../static/js/new_project/new_project.factory.js"></script>
 
 	<!-- Services -->
 
@@ -48,6 +53,7 @@
 	<script src="../static/js/new_project/new_project.controller.js"></script>
 
 
+
 </head>
 
 <body>
@@ -57,6 +63,7 @@
 	<!-- This is where we load our content -->
 	<div ng-view></div>
 
+	</br>
 </body>
 
 </html>

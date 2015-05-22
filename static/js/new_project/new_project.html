@@ -1,29 +1,35 @@
 <div class="container">
 	<div class="row clearfix">
-		<div class="col-md-12 column">
-			<div class="row clearfix">
-				<div class="col-md-3 column">
+		<div class="row clearfix">
+			<div class="col-md-6 column">
+				<!-- <form role="form"> -->
+				<div class="form-group">
+					<label for="exampleInputEmail1">Project Name</label>
+					<input
+						type="text"
+						class="form-control"
+						ng-model = "projectName" />
 				</div>
-				<div class="col-md-6 column">
-					<form role="form">
-						<div class="form-group">
-							<label for="exampleInputEmail1">Project Name</label>
-							<input class="form-control" type="email" />
-						</div>
-						<div class="form-group">
-							<label for="exampleInputPassword1">Config.json</label>
-							<textarea class="form-control"></textarea>
-						</div>
-						<div class="form-group">
-							<label for="exampleInputPassword1">Devices.json</label>
-							<textarea class="form-control"></textarea>
-						</div>
-						<button type="submit" class="btn btn-success">Create Project</button>
-					</form>
+				<!-- </form> -->
+			</div>
+			<div class="col-md-6 column">
+			</div>
+		</div>
+		<div class="row clearfix">
+			<div class="col-md-6 column">
+				<div class="form-group">
+					<label>Config.json</label>
+					<div ng-jsoneditor="onLoad" ng-model="configSettings.data" options="configSettings.options"></div>
 				</div>
-				<div class="col-md-3 column">
+			</div>
+			<div class="col-md-6 column">
+				<div class="form-group">
+					<label>Devices.json</label>
+					<div ng-jsoneditor="onLoad" ng-model="devicesSettings.data" options="devicesSettings.options"></div>
 				</div>
 			</div>
 		</div>
+		<button type="button" class="btn btn-success" ng-click="createProject()">Create Project</button>
+
 	</div>
 </div>
