@@ -1,0 +1,20 @@
+<nav class="navbar navbar-default navbar-static-top">
+	<div class="container">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">Pixel Compare</a>
+			<p class="navbar-text">-TeamFit</p>
+		</div>
+		<div class="navbar-right">
+			<button
+				ng-hide="isLoggedIn"
+				type="button"
+				ng-click = "newProject()"
+				class="btn btn-success navbar-btn">New Project</button>
+			<button
+				ng-hide="isLoggedIn"
+				type="button"
+				ng-click = "projectsList()"
+				class="btn btn-warning navbar-btn">Projects</button>
+		</div>
+	</div>
+</nav>

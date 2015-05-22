@@ -57,7 +57,7 @@ if __name__=="__main__":
 			for deviceType in subject['devices']:
 				if deviceType in devicesKeys:
 					fileName = devices[deviceType]['name'] + ".png"
-					resolution = str(devices[deviceType]['width']) + "x" + str(devices[deviceType]['width'])
+					resolution = str(devices[deviceType]['width']) + "x" + str(devices[deviceType]['height'])
 					url = subject['pageUrl']
 					if os.path.isfile(config['projectName'] + "/input/source/" + subject['pageName'] + "/" + fileName):
 						print colored("Exists: " + subject['pageName'] + "/" + fileName + ".", "green")
