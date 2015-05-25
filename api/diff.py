@@ -1,7 +1,8 @@
 import cv2
 import cv2.cv as cv
 import numpy as np
-import os, sys
+import os
+import sys
 import api
 '''
 	Finds the difference between the two images and retruns the output.
@@ -11,14 +12,31 @@ import api
 
 	Returns a tupple of differece image, contours overlapped on source, contours overlapped on subject.
 '''
-def diff(source_img_path, subject_img_path):
-	source_img = cv2.imread(source_img_path,1)
-	subject_img = cv2.imread(subject_img_path,1)
-	diff_img = source_img-subject_img
-	imgray = cv2.cvtColor(diff_img,cv2.COLOR_BGR2GRAY)
-	contours, hierarchy = cv2.findContours(imgray,cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
-	cv2.drawContours(source_img, contours, -1, (0,255,0), 1)
-	cv2.drawContours(subject_img, contours, -1, (255,0,0), 1)
+
+
+def compare(source_img_path, subject_img_path):
+	source_img = cv2.imread(source_img_path, 1)
+	subject_img = cv2.imread(subject_img_path, 1)
+
+	# Compensate for different sizes of source and subject images.
+	source_height, source_width, source_depth = source_img.shape
+	subject_height, subject_width, subject_depth = subject_img.shape
+	if source_height < subject_height:
+		subject_img = subject_img[0:source_height, 0:subject_width]
+	else:
+		source_img = source_img[0:subject_height, 0:source_width]
+
+	if source_width < subject_width:
+		subject_img = subject_img[0:subject_height, 0:source_width]
+	else:
+		source_img = source_img[0:source_height, 0:subject_width]
+
+	diff_img = source_img - subject_img
+	imgray = cv2.cvtColor(diff_img, cv2.COLOR_BGR2GRAY)
+	contours, hierarchy = cv2.findContours(
+	    imgray, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+	cv2.drawContours(source_img, contours, -1, (0, 255, 0), 1)
+	cv2.drawContours(subject_img, contours, -1, (255, 0, 0), 1)
 	return (diff_img, source_img, subject_img)
 
 '''
@@ -26,7 +44,12 @@ def diff(source_img_path, subject_img_path):
 	@img: The image object to save.
 	@save_as: The path of the saved image.
 '''
+
+
 def write(img, save_as):
+	d = os.path.dirname(save_as)
+	if not os.path.exists(d):
+		os.makedirs(d)
 	cv2.imwrite(save_as, img)
 
 '''
@@ -50,7 +73,7 @@ if __name__=="__main__":
 	subject = sys.argv[2];
 	output_path = sys.argv[3];
 
-	diff_img, source_img, subject_img = diff(source, subject)
+	diff_img, source_img, subject_img = compare(source, subject)
 	cv2.imshow('Difference',diff_img)
 	cv2.imshow('Contours On Source',source_img)
 	cv2.imshow('Contours On Subject',subject_img)

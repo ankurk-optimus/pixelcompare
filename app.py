@@ -3,6 +3,7 @@ import os
 import json
 import api.api as api
 import api.prjinit as prjinit
+import api.diff as diff
 
 app = Flask(__name__)
 
@@ -126,6 +127,47 @@ def upload(project_name):
     else:
         return api.create_json_response("failure", -1, "File cannot be uploaded.")
 
+
+@app.route("/compare/<project_name>/<page_name>/<device>", methods=['GET'])
+def compare(project_name, page_name, device):
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+    elif os.path.isfile(api.source_file_path(PRJ_ROOT, project_name, page_name, device)) is False:
+        return api.create_json_response("failure", -1, message="Source image does not exist")
+    elif os.path.isfile(api.screenshot_file_path(PRJ_ROOT, project_name, page_name, device)) is False:
+        return api.create_json_response("failure", -1, message="Screenshot image does not exist")
+
+    diff_img, source_img, subject_img = diff.compare(api.source_file_path(
+        PRJ_ROOT, project_name, page_name, device),api.screenshot_file_path(PRJ_ROOT, project_name, page_name, device))
+
+    diff.write(diff_img, api.diff_file_path(
+        PRJ_ROOT, project_name, page_name, device))
+    diff.write(source_img, api.contourOnSource_file_path(
+        PRJ_ROOT, project_name, page_name, device))
+    diff.write(subject_img, api.contourOnSubject_file_path(
+        PRJ_ROOT, project_name, page_name, device))
+
+    error_code = 0
+    error_message=""
+    if os.path.isfile(api.diff_file_path(
+        PRJ_ROOT, project_name, page_name, device)) is False:
+        error_code = -1
+        error_message = error_message + "Difference file could not be created."
+
+    if os.path.isfile(api.contourOnSource_file_path(
+        PRJ_ROOT, project_name, page_name, device)) is False:
+        error_code = -1
+        error_message = error_message + "Countour on source file could not be created."
+
+    if os.path.isfile(api.contourOnSource_file_path(
+        PRJ_ROOT, project_name, page_name, device)) is False:
+        error_code = -1
+        error_message = error_message + "Countour on subject file could not be created."
+
+    if error_code is -1:
+        return api.create_json_response("failure", -1, message = error_message)
+    else:
+        return api.create_json_response("success", 0, message = "Comparison completed successfully.")
 
 if __name__ == '__main__':
     app.run(debug=True)
