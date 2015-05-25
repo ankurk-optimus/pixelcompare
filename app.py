@@ -8,9 +8,11 @@ app = Flask(__name__)
 
 PRJ_ROOT = './static/projects/'
 
+
 @app.route("/")
 def index():
     return send_file("templates/index.html")
+
 
 @app.route("/create_project", methods=['POST'])
 def create_project():
@@ -36,25 +38,31 @@ def get_projects():
 
 @app.route("/testcases/<project_name>", methods=['GET'])
 def getTestCases(project_name):
-    config_data = api.readInputFile(api.config_file_path(PRJ_ROOT, project_name))
-    devices_data = api.readInputFile(api.devices_file_path(PRJ_ROOT, project_name))
 
-    response_data={
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+
+    config_data = api.readInputFile(
+        api.config_file_path(PRJ_ROOT, project_name))
+    devices_data = api.readInputFile(
+        api.devices_file_path(PRJ_ROOT, project_name))
+
+    response_data = {
         'projectName': config_data['projectName'],
         'testcases': None
     }
-    testcases=[]
+    testcases = []
 
     for subject in config_data['subject']:
-        page_name=subject['pageName']
-        page_url=subject['pageUrl']
-        testcase={
+        page_name = subject['pageName']
+        page_url = subject['pageUrl']
+        testcase = {
             'pageName': page_name,
             'pageUrl': page_url,
             'images': []
         }
         for device in subject['devices']:
-            image={
+            image = {
                 'device': device,
                 'source': None,
                 'screenshot': None,
@@ -65,45 +73,58 @@ def getTestCases(project_name):
                 }
             }
 
-            source_file_path=api.source_file_path(
+            source_file_path = api.source_file_path(
                 PRJ_ROOT, project_name, page_name, device)
-            screenshot_file_path=api.screenshot_file_path(
+            screenshot_file_path = api.screenshot_file_path(
                 PRJ_ROOT, project_name, page_name, device)
-            contourOnSource_file_path=api.contourOnSource_file_path(
+            contourOnSource_file_path = api.contourOnSource_file_path(
                 PRJ_ROOT, project_name, page_name, device)
-            contourOnSubject_file_path=api.contourOnSubject_file_path(
+            contourOnSubject_file_path = api.contourOnSubject_file_path(
                 PRJ_ROOT, project_name, page_name, device)
-            diff_file_path=api.diff_file_path(
+            diff_file_path = api.diff_file_path(
                 PRJ_ROOT, project_name, page_name, device)
 
             if(os.path.isfile(source_file_path)):
-                image['source']=api.source_file_path(
+                image['source'] = api.source_file_path(
                     PRJ_ROOT, project_name, project_name, device, True)
             if(os.path.isfile(screenshot_file_path)):
-                image['screenshot']=api.screenshot_file_path(
+                image['screenshot'] = api.screenshot_file_path(
                     PRJ_ROOT, project_name, page_name, device, True)
 
             if(os.path.isfile(contourOnSource_file_path)):
-                image['output']['contourOnSource']=api.contourOnSource_file_path(
+                image['output']['contourOnSource'] = api.contourOnSource_file_path(
                     PRJ_ROOT, project_name, page_name, device, True)
             if(os.path.isfile(contourOnSubject_file_path)):
-                image['output']['contourOnSubject']=api.contourOnSubject_file_path(
+                image['output']['contourOnSubject'] = api.contourOnSubject_file_path(
                     PRJ_ROOT, project_name, page_name, device, True)
             if(os.path.isfile(diff_file_path)):
-                image['output']['diff']=api.diff_file_path(
+                image['output']['diff'] = api.diff_file_path(
                     PRJ_ROOT, project_name, page_name, device, True)
 
             testcase['images'].append(image)
         testcases.append(testcase)
-    response_data['testcases']=testcases
+    response_data['testcases'] = testcases
     return api.create_json_response("success", 0, data=response_data)
 
 
-# @app.route("/upload/<project_name>", methods=['POST'])
-# def upload(project_name):
-#     request_data = json.loads(request.data)
-#     file_path = PRJ_ROOT + project_name + '/input/' +
-#         request_data['type'] + '/' + request_data['pageName']
+@app.route("/upload/<project_name>", methods=['POST'])
+def upload(project_name):
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+
+    img_type = request.form.get('type')
+    img_page_name = request.form.get('pageName')
+    img_device = request.form.get('device')
+    file_path = PRJ_ROOT + project_name + '/input/' + \
+        img_type + '/' + img_page_name + '/' + \
+        img_device + '.png'
+
+    uploaded_File = request.files['file']
+    uploaded_File.save(file_path)
+    if os.path.isfile(file_path):
+        return api.create_json_response("success", 0, "File uploaded successfully.")
+    else:
+        return api.create_json_response("failure", -1, "File cannot be uploaded.")
 
 
 if __name__ == '__main__':
