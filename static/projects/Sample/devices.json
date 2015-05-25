@@ -1,0 +1,17 @@
+{
+	"iphone4": {
+		"name": "iphone4",
+		"width": 320,
+		"height": 480
+	},
+	"android4.3": {
+		"name": "android4.3",
+		"width": 360,
+		"height": 480
+	},
+	"iphone6": {
+		"name": "iphone6",
+		"width": 375,
+		"height": 480
+	}
+}

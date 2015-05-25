@@ -1,0 +1,52 @@
+{
+	"projectName": "TeamFit",
+	"subject": [{
+		"pageName": "checkout1",
+		"pageUrl": "http://www.headhonchos.com/",
+		"devices": [
+			"iphone4",
+			"android4.3",
+			"iphone6"
+		]
+	}, {
+		"pageName": "jackets",
+		"pageUrl": "http://www.vincecamuto.com/jackets-clothing/",
+		"devices": [
+			"iphone4",
+			"android4.3",
+			"iphone6"
+		]
+	}, {
+		"pageName": "nav",
+		"pageUrl": "http://www.vincecamuto.com/",
+		"devices": [
+			"iphone4",
+			"android4.3",
+			"iphone6"
+		]
+	}, {
+		"pageName": "personalData",
+		"pageUrl": "https://www.vincecamuto.com/profile",
+		"devices": [
+			"iphone4",
+			"android4.3",
+			"iphone6"
+		]
+	}, {
+		"pageName": "privacyPolicy",
+		"pageUrl": "https://www.vincecamuto.com/profile",
+		"devices": [
+			"iphone4",
+			"android4.3",
+			"iphone6"
+		]
+	}, {
+		"pageName": "registration",
+		"pageUrl": "https://www.vincecamuto.com/register",
+		"devices": [
+			"iphone4",
+			"android4.3",
+			"iphone6"
+		]
+	}]
+}
