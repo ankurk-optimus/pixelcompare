@@ -53,10 +53,24 @@
 
 					<div class="row clearfix row-with-margin">
 						<div class="col-md-6 column">
-							<button type="button" class="btn btn-default btn-xs pull-right">Upload</button>
+							<button
+								type="button"
+								class="btn btn-default btn-xs pull-right"
+								ngf-select
+								ngf-change="uploadSource($files)"
+								ngf-multiple="false"
+								allow-dir="false"
+								accept="image/*">Upload</button>
 						</div>
 						<div class="col-md-6 column">
-							<button type="button" class="btn btn-default btn-xs pull-right">Upload</button>
+							<button
+								type="button"
+								class="btn btn-default btn-xs pull-right"
+								ngf-select
+								ngf-change="uploadScreenshot($files)"
+								ngf-multiple="false"
+								allow-dir="false"
+								accept="image/*">Upload</button>
 						</div>
 					</div>
 
@@ -86,7 +100,6 @@
 							<button type="button" class="btn btn-warning pull-right right-margin" ng-click="toggleModal()">Compare With</button>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>

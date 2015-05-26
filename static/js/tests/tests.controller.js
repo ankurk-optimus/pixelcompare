@@ -4,8 +4,8 @@ Tests.controller('TestsCtrl', ['$scope',
 	'$location',
 	'$route',
 	'testCases',
-	'TestsFactory',
-	function($scope, $location, $route, testCases, TestsFactory) {
+	'TestsFactory','Upload',
+	function($scope, $location, $route, testCases, TestsFactory,Upload) {
 		$scope.testCases = testCases.testcases;
 		$scope.projectName = testCases.projectName;
 
@@ -14,9 +14,9 @@ Tests.controller('TestsCtrl', ['$scope',
 			image: null,
 		};
 
-		$scope.modalParams={
-			showModal:false,
-			urlToOpen:null
+		$scope.modalParams = {
+			showModal: false,
+			urlToOpen: null
 		};
 
 		$scope.toggleModal = function(url) {
@@ -24,7 +24,7 @@ Tests.controller('TestsCtrl', ['$scope',
 			$scope.modalParams.urlToOpen = url;
 		};
 
-		$scope.imageUrl=null;
+		$scope.imageUrl = null;
 		$scope.error = null;
 
 		console.log($scope.testCases);
@@ -91,7 +91,66 @@ Tests.controller('TestsCtrl', ['$scope',
 			});
 		};
 
+		$scope.uploadSource = function(files) {
+			if (files && files.length == 1) {
+				var file = files[0];
+				Upload.upload({
+					method: 'POST',
+					url: 'http://localhost:5000/upload/' + $scope.projectName,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					fileName:$scope.selected.image.device + '.png',
+					file: file,
+					fileFormDataName: 'file',
+					fields: {
+						type: 'source',
+						pageName: $scope.selected.testCase.pageName,
+						device: $scope.selected.image.device
+					}
+				}).progress(function(evt) {
+					var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+					console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+				}).success(function(data, status, headers, config) {
+					var response = data.data;
+					console.log(response);
+					$scope.selected.image.source = response.path;
+				}).error(function(){
+					$scope.error="Image could not be uploaded.";
+					$scope.selected.image.source = temp;
+				});
+			}
+		};
 
+		$scope.uploadScreenshot = function(files) {
+			if (files && files.length == 1) {
+				var file = files[0];
+				Upload.upload({
+					method: 'POST',
+					url: 'http://localhost:5000/upload/' + $scope.projectName,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					fileName:$scope.selected.image.device + '.png',
+					file: file,
+					fileFormDataName: 'file',
+					fields: {
+						type: 'screenshots',
+						pageName: $scope.selected.testCase.pageName,
+						device: $scope.selected.image.device
+					}
+				}).progress(function(evt) {
+					var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+					console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+				}).success(function(data, status, headers, config) {
+					var response = data.data;
+					console.log(response);
+					$scope.selected.image.screenshot = response.path;
+				}).error(function(){
+					$scope.error="Image could not be uploaded.";
+				});;
+			}
+		};
 
 		// Check if we have testcases.
 		if ($scope.testCases != undefined && $scope.testCases != null && $scope.testCases.length > 0) {

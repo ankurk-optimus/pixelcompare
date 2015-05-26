@@ -121,11 +121,25 @@ def upload(project_name):
         img_device + '.png'
 
     uploaded_File = request.files['file']
+
+    d = os.path.dirname(file_path)
+    if not os.path.exists(d):
+    	os.makedirs(d)
+
     uploaded_File.save(file_path)
     if os.path.isfile(file_path):
-        return api.create_json_response("success", 0, "File uploaded successfully.")
+        output = {
+            'path': None
+        }
+
+        if img_type is 'source':
+            output['path'] = api.source_file_path(PRJ_ROOT, project_name, img_page_name, img_device, True)
+        else:
+            output['path'] = api.screenshot_file_path(PRJ_ROOT, project_name, img_page_name, img_device, True)
+
+        return api.create_json_response("success", 0, data=output)
     else:
-        return api.create_json_response("failure", -1, "File cannot be uploaded.")
+        return api.create_json_response("failure", -1, message="File cannot be uploaded.")
 
 
 @app.route("/compare/<project_name>/<page_name>/<device>", methods=['GET'])
