@@ -1,3 +1,11 @@
+<div class="container">
+	<div class="row clearfix row-with-margin">
+		<div class="col-md-10 column">
+			<button type="button" class="btn btn-default btn-xs">Add Test Case</button>
+			<button type="button" class="btn btn-default btn-xs">Add Devices</button>
+		</div>
+	</div>
+</div>
 <div class="container" full-height-panel offset="100">
 	<div class="row clearfix" style="height:100%">
 		<div class="col-md-4 column" style="height:inherit">
@@ -22,12 +30,26 @@
 				</div>
 				<div class="panel-body full-height">
 
-					<div class="row clearfix row-with-margin">
+					<div class="row clearfix button-group-row">
 						<div class="col-md-12 column">
 							<div class="btn-group" role="group" ng-if="selected.testCase!=null && selected.testCase.images.length>0">
-								<button type="button" class="btn btn-default" ng-repeat="image in selected.testCase.images" ng-click="selectImage(image)" ng-class="{'btn-warning':image.selected==true}">{{image.device}}</button>
+								<button type="button" class="btn btn-default btn-xs" ng-repeat="image in selected.testCase.images" ng-click="selectImage(image)" ng-class="{'btn-warning':image.selected==true}">{{image.device}}</button>
+							</div>
+							<div class="btn-group">
+								<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									More
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="#">Delect Test Case</a></li>
+									<li><a href="#">Delete Selected Device</a></li>
+									<li class="divider"></li>
+									<li><a href="#">Change Test Case Name</a></li>
+									<li><a href="#">Add Another Device</a></li>
+								</ul>
 							</div>
 						</div>
+
 					</div>
 
 					<div class="row clearfix row-with-margin" ng-if="error!=null">
@@ -53,24 +75,10 @@
 
 					<div class="row clearfix row-with-margin">
 						<div class="col-md-6 column">
-							<button
-								type="button"
-								class="btn btn-default btn-xs pull-right"
-								ngf-select
-								ngf-change="uploadSource($files)"
-								ngf-multiple="false"
-								allow-dir="false"
-								accept="image/*">Upload</button>
+							<button type="button" class="btn btn-default btn-xs pull-right" ngf-select ngf-change="uploadSource($files)" ngf-multiple="false" allow-dir="false" accept="image/*">Upload</button>
 						</div>
 						<div class="col-md-6 column">
-							<button
-								type="button"
-								class="btn btn-default btn-xs pull-right"
-								ngf-select
-								ngf-change="uploadScreenshot($files)"
-								ngf-multiple="false"
-								allow-dir="false"
-								accept="image/*">Upload</button>
+							<button type="button" class="btn btn-default btn-xs pull-right" ngf-select ngf-change="uploadScreenshot($files)" ngf-multiple="false" allow-dir="false" accept="image/*">Upload</button>
 						</div>
 					</div>
 

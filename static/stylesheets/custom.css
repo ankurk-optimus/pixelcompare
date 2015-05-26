@@ -48,3 +48,8 @@ img {
 .right-margin{
 	margin-right: 15px;
 }
+
+.button-group-row{
+	padding-bottom:15px;
+	border-bottom: 1px solid #aaaaaa;
+}
