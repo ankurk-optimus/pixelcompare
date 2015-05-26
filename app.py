@@ -167,7 +167,20 @@ def compare(project_name, page_name, device):
     if error_code is -1:
         return api.create_json_response("failure", -1, message = error_message)
     else:
-        return api.create_json_response("success", 0, message = "Comparison completed successfully.")
+
+        output = {
+            'contourOnSubject': None,
+            'contourOnSource': None,
+            'diff': None
+        }
+        output['contourOnSource'] = api.contourOnSource_file_path(
+            PRJ_ROOT, project_name, page_name, device, True)
+        output['contourOnSubject'] = api.contourOnSubject_file_path(
+            PRJ_ROOT, project_name, page_name, device, True)
+        output['diff'] = api.diff_file_path(
+                PRJ_ROOT, project_name, page_name, device, True)
+
+        return api.create_json_response("success", 0, data = output)
 
 if __name__ == '__main__':
     app.run(debug=True)

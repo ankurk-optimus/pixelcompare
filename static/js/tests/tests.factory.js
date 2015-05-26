@@ -26,6 +26,28 @@ Tests.factory("TestsFactory", function($q, $http, $location) {
 		return deferred.promise;
 	};
 
+	factory.compare = function(projectName, pageName, device){
+		var deferred = $q.defer();
+		$http({
+			method: 'GET',
+			url: 'http://localhost:5000/compare/' + projectName + '/' + pageName + '/' + device,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			data: null
+		}).then(function(result) {
+			var data = result.data;
+			if (data.error_code == 0) {
+				deferred.resolve(data.data)
+			} else {
+				deferred.reject(data);
+			}
+		}, function(error) {
+			deferred.reject(error);
+		});
+		return deferred.promise;
+	};
+
 	return factory;
 
 })

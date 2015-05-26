@@ -1,2 +1,2 @@
 'use strict';
-var Tests = angular.module('Tests', []);
+var Tests = angular.module('Tests', ['Modal']);

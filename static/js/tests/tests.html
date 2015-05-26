@@ -7,11 +7,7 @@
 				</div>
 				<div class="panel-body testcase-list-panel full-height">
 					<ul class="list-group testcase-list-group">
-						<a
-							ng-repeat="testCase in testCases"
-							ng-click="selectTestCase(testCase)"
-							class="list-group-item testcase-list-item"
-							ng-class="{'list-group-item-danger':testCase.selected==true}">
+						<a ng-repeat="testCase in testCases" ng-click="selectTestCase(testCase)" class="list-group-item testcase-list-item" ng-class="{'list-group-item-warning':testCase.selected==true}">
 							<span class="badge">{{testCase.images.length}}</span>
 							{{testCase.pageName}}
 						</a>
@@ -29,26 +25,27 @@
 					<div class="row clearfix row-with-margin">
 						<div class="col-md-12 column">
 							<div class="btn-group" role="group" ng-if="selected.testCase!=null && selected.testCase.images.length>0">
-								<button
-									type="button"
-									class="btn btn-default"
-									ng-repeat="image in selected.testCase.images"
-									ng-click="selectImage(image)"
-									ng-class="{'btn-danger':image.selected==true}">{{image.device}}</button>
+								<button type="button" class="btn btn-default" ng-repeat="image in selected.testCase.images" ng-click="selectImage(image)" ng-class="{'btn-warning':image.selected==true}">{{image.device}}</button>
 							</div>
+						</div>
+					</div>
+
+					<div class="row clearfix row-with-margin" ng-if="error!=null">
+						<div class="col-md-12 column">
+							<div class="alert alert-danger" role="alert">{{error}}</div>
 						</div>
 					</div>
 
 					<div class="row clearfix">
 						<div class="col-md-6 column">
 							<h4>Source Image </h4>
-							<a href="#" class="thumbnail image-thumbnails thumbnail-container">
+							<a class="thumbnail image-thumbnails thumbnail-container" ng-click="toggleModal(selected.image.source)">
 								<img src="{{selected.image.source}}" alt="No Image">
 							</a>
 						</div>
 						<div class="col-md-6 column">
 							<h4>Screenshot Image</h4>
-							<a href="#" class="thumbnail image-thumbnails thumbnail-container">
+							<a class="thumbnail image-thumbnails thumbnail-container" ng-click="toggleModal(selected.image.screenshot)">
 								<img src="{{selected.image.screenshot}}" alt="No Image">
 							</a>
 						</div>
@@ -66,27 +63,27 @@
 					<div class="row clearfix">
 						<div class="col-md-4 column">
 							<h4>Differences Image</h4>
-							<a href="#" class="thumbnail thumbnail-container">
+							<a class="thumbnail thumbnail-container" ng-click="toggleModal(selected.image.output.diff)">
 								<img src="{{selected.image.output.diff}}" alt="No Image">
 							</a>
 						</div>
 						<div class="col-md-4 column">
 							<h4>Contours on Source</h4>
-							<a href="#" class="thumbnail thumbnail-container">
+							<a class="thumbnail thumbnail-container" ng-click="toggleModal(selected.image.output.contourOnSource)">
 								<img src="{{selected.image.output.contourOnSource}}" alt="No Image">
 							</a>
-						</div>
+						</div>subject
 						<div class="col-md-4 column">
 							<h4>Contours on Screenshot</h4>
-							<a href="#" class="thumbnail thumbnail-container">
+							<a class="thumbnail thumbnail-container" ng-click="toggleModal(selected.image.output.contourOnSubject)">
 								<img src="{{selected.image.output.contourOnSubject}}" alt="No Image">
 							</a>
 						</div>
 					</div>
 					<div class="row clearfix">
 						<div class="col-md-12 column">
-							<button type="button" class="btn btn-primary pull-right">Compare</button>
-							<button type="button" class="btn btn-warning pull-right right-margin">Compare With</button>
+							<button type="button" class="btn btn-primary pull-right" ng-click="compare()">Compare</button>
+							<button type="button" class="btn btn-warning pull-right right-margin" ng-click="toggleModal()">Compare With</button>
 						</div>
 					</div>
 
@@ -95,3 +92,7 @@
 		</div>
 	</div>
 </div>
+
+<modal title="Image" visible="modalParams.showModal">
+	<img src="{{modalParams.urlToOpen}}" alt="No Image">
+</modal>
