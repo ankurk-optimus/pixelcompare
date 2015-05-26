@@ -1,0 +1,92 @@
+<div class="container" full-height-panel offset="100">
+	<div class="row clearfix" style="height:100%">
+		<div class="col-md-4 column" style="height:inherit">
+			<div class="panel panel-primary" style="height:inherit">
+				<div class="panel-heading">
+					<h3 class="panel-title">Test Cases</h3>
+				</div>
+				<div class="panel-body testcase-list-panel full-height">
+					<ul class="list-group testcase-list-group">
+						<a
+							ng-repeat="testCase in testCases"
+							ng-click="selectTestCase(testCase)"
+							class="list-group-item testcase-list-item"
+							ng-class="{'list-group-item-danger':testCase.selected==true}">
+							<span class="badge">{{testCase.images.length}}</span>
+							{{testCase.pageName}}
+						</a>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 column" style="height:inherit">
+			<div class="panel panel-primary" style="height:inherit">
+				<div class="panel-heading">
+					<h3 class="panel-title ">Details</h3>
+				</div>
+				<div class="panel-body full-height">
+
+					<div class="row clearfix row-with-margin">
+						<div class="col-md-12 column">
+							<div class="btn-group" role="group" ng-if="selected.testCase!=null && selected.testCase.images.length>0">
+								<button
+									type="button"
+									class="btn btn-default"
+									ng-repeat="image in selected.testCase.images"
+									ng-click="selectImage(image)"
+									ng-class="{'btn-danger':image.selected==true}">{{image.device}}</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="row clearfix">
+						<div class="col-md-6 column">
+							<a href="#" class="thumbnail image-thumbnails thumbnail-container">
+								<img src="{{selected.image.source}}" alt="No Image">
+							</a>
+						</div>
+						<div class="col-md-6 column">
+							<a href="#" class="thumbnail image-thumbnails thumbnail-container">
+								<img src="{{selected.image.screenshot}}" alt="No Image">
+							</a>
+						</div>
+					</div>
+
+					<div class="row clearfix row-with-margin">
+						<div class="col-md-6 column">
+							<button type="button" class="btn btn-default btn-xs pull-right">Upload</button>
+						</div>
+						<div class="col-md-6 column">
+							<button type="button" class="btn btn-default btn-xs pull-right">Upload</button>
+						</div>
+					</div>
+
+					<div class="row clearfix">
+						<div class="col-md-4 column">
+							<a href="#" class="thumbnail thumbnail-container">
+								<img src="{{selected.image.output.diff}}" alt="No Image">
+							</a>
+						</div>
+						<div class="col-md-4 column">
+							<a href="#" class="thumbnail thumbnail-container">
+								<img src="{{selected.image.output.contourOnSource}}" alt="No Image">
+							</a>
+						</div>
+						<div class="col-md-4 column">
+							<a href="#" class="thumbnail thumbnail-container">
+								<img src="{{selected.image.output.contourOnSubject}}" alt="No Image">
+							</a>
+						</div>
+					</div>
+					<div class="row clearfix">
+						<div class="col-md-12 column">
+							<button type="button" class="btn btn-primary pull-right">Compare</button>
+							<button type="button" class="btn btn-warning pull-right right-margin">Compare With</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

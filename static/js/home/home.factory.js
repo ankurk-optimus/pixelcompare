@@ -16,7 +16,7 @@ HomeModule.factory("HomeFactory", function($q, $http, $location){
         }).then(function(result) {
             var data = result.data;
             if (data.error_code == 0) {
-            	var projects= data.projects;
+            	var projects= data.data;
                 deferred.resolve(projects);
             } else {
                 deferred.reject(data);

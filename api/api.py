@@ -54,32 +54,32 @@ def source_file_path(root, project_name, page_name, device, relative_path=False)
     if relative_path is False:
         return root + project_name + '/input/source/' + page_name + '/' + device + '.png'
     else:
-        return project_name + '/input/source/' + page_name + '/' + device + '.png'
+        return 'static/projects/' + project_name + '/input/source/' + page_name + '/' + device + '.png'
 
 
 def screenshot_file_path(root, project_name, page_name, device, relative_path=False):
     if relative_path is False:
         return root + project_name + '/input/screenshots/' + page_name + '/' + device + '.png'
     else:
-        return project_name + '/input/screenshots/' + page_name + '/' + device + '.png'
+        return 'static/projects/' + project_name + '/input/screenshots/' + page_name + '/' + device + '.png'
 
 
 def contourOnSource_file_path(root, project_name, page_name, device, relative_path=False):
     if relative_path is False:
         return root + project_name + '/output/' + page_name + '/' + device + '/contours_on_source.png'
     else:
-        return project_name + '/output/' + page_name + '/' + device + '/contours_on_source.png'
+        return 'static/projects/' + project_name + '/output/' + page_name + '/' + device + '/contours_on_source.png'
 
 
 def contourOnSubject_file_path(root, project_name, page_name, device, relative_path=False):
     if relative_path is False:
         return root + project_name + '/output/' + page_name + '/' + device + '/contours_on_subject.png'
     else:
-        return project_name + '/output/' + page_name + '/' + device + '/contours_on_subject.png'
+        return 'static/projects/' + project_name + '/output/' + page_name + '/' + device + '/contours_on_subject.png'
 
 
 def diff_file_path(root, project_name, page_name, device, relative_path=False):
     if relative_path is False:
         return root + project_name + '/output/' + page_name + '/' + device + '/diff.png'
     else:
-        return project_name + '/output/' + page_name + '/' + device + '/diff.png'
+        return 'static/projects/' + project_name + '/output/' + page_name + '/' + device + '/diff.png'

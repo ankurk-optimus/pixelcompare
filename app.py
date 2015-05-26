@@ -87,7 +87,7 @@ def getTestCases(project_name):
 
             if(os.path.isfile(source_file_path)):
                 image['source'] = api.source_file_path(
-                    PRJ_ROOT, project_name, project_name, device, True)
+                    PRJ_ROOT, project_name, page_name, device, True)
             if(os.path.isfile(screenshot_file_path)):
                 image['screenshot'] = api.screenshot_file_path(
                     PRJ_ROOT, project_name, page_name, device, True)
