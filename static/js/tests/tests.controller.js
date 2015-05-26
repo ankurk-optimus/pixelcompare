@@ -52,6 +52,11 @@ Tests.controller('TestsCtrl', ['$scope',
 			// Select the new element.
 			$scope.selected.image = image;
 			$scope.selected.image.selected=true;
+		};
+
+		// Check if we have testcases.
+		if($scope.testCases!=undefined && $scope.testCases!=null && $scope.testCases.length>0){
+			$scope.selectTestCase($scope.testCases[0]);
 		}
 	}
 ]);
