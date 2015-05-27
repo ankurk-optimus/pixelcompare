@@ -1,1 +1,12 @@
-{"Android": {"width": 320, "name": "Android", "height": 480}, "iOS": {"width": 320, "name": "iOS", "height": 480}}
+{
+	"Android": {
+		"width": 320,
+		"name": "Android",
+		"height": 480
+	},
+	"iOS": {
+		"width": 320,
+		"name": "iOS",
+		"height": 480
+	}
+}
