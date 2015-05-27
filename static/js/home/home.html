@@ -6,7 +6,7 @@
     				Projects List
   				</a>
 
-				<a href="#" class="list-group-item" ng-repeat="project in projects">{{project}}</a>
+				<a class="list-group-item" ng-repeat="project in projects" ng-click="selectProject(project)">{{project}}</a>
 
 			</div>
 			<div class="alert alert-danger" role="alert" ng-show="projects==null || projects.length==0">No projects yet.</div>

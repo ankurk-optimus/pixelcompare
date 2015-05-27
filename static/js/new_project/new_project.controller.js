@@ -56,6 +56,8 @@ NewProject.controller('NewProjectCtrl', ['$scope', 'NewProjectFactory', '$locati
 			}
 		};
 
+		$scope.error = null;
+
 		$scope.projectName = "Sample";
 
 		$scope.onLoad = function(instance) {
@@ -63,6 +65,7 @@ NewProject.controller('NewProjectCtrl', ['$scope', 'NewProjectFactory', '$locati
 		};
 
 		$scope.createProject = function() {
+			$scope.error = null;
 			if ($scope.projectName == null || $scope.projectName.length == 0)
 				return;
 			if ($scope.configSettings.data == null || $scope.devicesSettings.data == null)
@@ -72,6 +75,7 @@ NewProject.controller('NewProjectCtrl', ['$scope', 'NewProjectFactory', '$locati
 				$location.path("/")
 			}, function(error) {
 				console.log(error);
+				$scope.error = "Project could not be created.";
 			});
 		};
 	}
