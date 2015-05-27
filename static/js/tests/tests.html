@@ -30,7 +30,7 @@
 				</div>
 				<div class="panel-body full-height">
 
-					<div class="row clearfix button-group-row">
+					<div class="row clearfix button-group-row" ng-if="selected.testCase!=null">
 						<div class="col-md-12 column">
 							<div class="btn-group" role="group" ng-if="selected.testCase!=null && selected.testCase.images.length>0">
 								<button type="button" class="btn btn-default btn-xs" ng-repeat="image in selected.testCase.images" ng-click="selectImage(image)" ng-class="{'btn-warning':image.selected==true}">{{image.device}}</button>
@@ -58,7 +58,7 @@
 						</div>
 					</div>
 
-					<div class="row clearfix">
+					<div class="row clearfix" ng-if="selected.testCase!=null && selected.image!=null">
 						<div class="col-md-6 column">
 							<h4>Source Image </h4>
 							<a class="thumbnail image-thumbnails thumbnail-container" ng-click="toggleModal(selected.image.source)">
@@ -73,7 +73,7 @@
 						</div>
 					</div>
 
-					<div class="row clearfix row-with-margin">
+					<div class="row clearfix row-with-margin" ng-if="selected.testCase!=null && selected.image!=null">
 						<div class="col-md-6 column">
 							<button type="button" class="btn btn-default btn-xs pull-right" ngf-select ngf-change="uploadSource($files)" ngf-multiple="false" allow-dir="false" accept="image/*">Upload</button>
 						</div>
@@ -82,7 +82,7 @@
 						</div>
 					</div>
 
-					<div class="row clearfix">
+					<div class="row clearfix" ng-if="selected.testCase!=null && selected.image!=null">
 						<div class="col-md-4 column">
 							<h4>Differences Image</h4>
 							<a class="thumbnail thumbnail-container" ng-click="toggleModal(selected.image.output.diff)">
@@ -102,7 +102,7 @@
 							</a>
 						</div>
 					</div>
-					<div class="row clearfix">
+					<div class="row clearfix" ng-if="selected.testCase!=null && selected.image!=null">
 						<div class="col-md-12 column">
 							<button type="button" class="btn btn-primary pull-right" ng-click="compare()">Compare</button>
 							<button type="button" class="btn btn-warning pull-right right-margin" ng-click="toggleModal()">Compare With</button>

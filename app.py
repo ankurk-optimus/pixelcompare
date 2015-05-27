@@ -133,7 +133,7 @@ def upload(project_name):
             'path': None
         }
 
-        if img_type is 'source':
+        if img_type == 'source':
             output['path'] = api.source_file_path(
                 PRJ_ROOT, project_name, img_page_name, img_device, True)
         else:
@@ -324,6 +324,11 @@ def add_test_device(project_name):
     f.close()
     return api.create_json_response("success", 0, message="Device added to test case.")
 
+
+@app.after_request
+def add_header(response):
+    response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -14,7 +14,6 @@ Modal.directive('modal', function() {
 		restrict: 'E',
 		transclude: true,
 		replace: true,
-		scope: true,
 		link: function postLink(scope, element, attrs) {
 			scope.title = attrs.title;
 
@@ -23,7 +22,7 @@ Modal.directive('modal', function() {
 					$(element).modal('show');
 				else
 					$(element).modal('hide');
-					
+
 			});
 
 			$(element).on('shown.bs.modal', function() {

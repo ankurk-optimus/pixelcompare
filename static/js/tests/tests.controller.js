@@ -4,8 +4,8 @@ Tests.controller('TestsCtrl', ['$scope',
 	'$location',
 	'$route',
 	'testCases',
-	'TestsFactory','Upload',
-	function($scope, $location, $route, testCases, TestsFactory,Upload) {
+	'TestsFactory', 'Upload',
+	function($scope, $location, $route, testCases, TestsFactory, Upload) {
 		$scope.testCases = testCases.testcases;
 		$scope.projectName = testCases.projectName;
 
@@ -82,9 +82,17 @@ Tests.controller('TestsCtrl', ['$scope',
 
 			TestsFactory.compare($scope.projectName, pageName, device).then(function(response) {
 				console.log(response);
-				$scope.selected.image.output.contourOnSource = response.contourOnSource;
-				$scope.selected.image.output.contourOnSubject = response.contourOnSubject;
-				$scope.selected.image.output.diff = response.diff;
+				$scope.selected.image.output.contourOnSource = null;
+				$scope.selected.image.output.contourOnSubject = null;
+				$scope.selected.image.output.diff = null;
+				setTimeout(function() {
+					$scope.$apply(function() {
+						$scope.selected.image.output.contourOnSource = response.contourOnSource;
+						$scope.selected.image.output.contourOnSubject = response.contourOnSubject;
+						$scope.selected.image.output.diff = response.diff;
+					});
+				}, 3000);
+
 			}, function(error) {
 				console.log(error);
 				$scope.error = error.message;
@@ -100,7 +108,7 @@ Tests.controller('TestsCtrl', ['$scope',
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					fileName:$scope.selected.image.device + '.png',
+					fileName: $scope.selected.image.device + '.png',
 					file: file,
 					fileFormDataName: 'file',
 					fields: {
@@ -114,9 +122,15 @@ Tests.controller('TestsCtrl', ['$scope',
 				}).success(function(data, status, headers, config) {
 					var response = data.data;
 					console.log(response);
-					$scope.selected.image.source = response.path;
-				}).error(function(){
-					$scope.error="Image could not be uploaded.";
+					$scope.selected.image.source = null;
+					setTimeout(function(){
+						$scope.$apply(function() {
+							$scope.selected.image.source = response.path;
+						});
+					}, 3000);
+
+				}).error(function() {
+					$scope.error = "Image could not be uploaded.";
 					$scope.selected.image.source = temp;
 				});
 			}
@@ -131,7 +145,7 @@ Tests.controller('TestsCtrl', ['$scope',
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					fileName:$scope.selected.image.device + '.png',
+					fileName: $scope.selected.image.device + '.png',
 					file: file,
 					fileFormDataName: 'file',
 					fields: {
@@ -145,9 +159,14 @@ Tests.controller('TestsCtrl', ['$scope',
 				}).success(function(data, status, headers, config) {
 					var response = data.data;
 					console.log(response);
-					$scope.selected.image.screenshot = response.path;
-				}).error(function(){
-					$scope.error="Image could not be uploaded.";
+					$scope.selected.image.screenshot = null;
+					setTimeout(function(){
+						$scope.$apply(function() {
+							$scope.selected.image.screenshot = response.path;
+						});
+					}, 3000);
+				}).error(function() {
+					$scope.error = "Image could not be uploaded.";
 				});;
 			}
 		};

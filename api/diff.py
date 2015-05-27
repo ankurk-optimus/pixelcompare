@@ -32,11 +32,21 @@ def compare(source_img_path, subject_img_path):
 		source_img = source_img[0:source_height, 0:subject_width]
 
 	diff_img = source_img - subject_img
-	imgray = cv2.cvtColor(diff_img, cv2.COLOR_BGR2GRAY)
-	contours, hierarchy = cv2.findContours(
-	    imgray, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-	cv2.drawContours(source_img, contours, -1, (0, 255, 0), 1)
-	cv2.drawContours(subject_img, contours, -1, (255, 0, 0), 1)
+
+	imgray_diff = cv2.cvtColor(diff_img, cv2.COLOR_BGR2GRAY)
+	# imgray_subject = cv2.cvtColor(subject_img, cv2.COLOR_BGR2GRAY)
+
+	contours_diff, hierarchy_diff = cv2.findContours(
+	    imgray_diff, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
+	# contours_subject, hierarchy_subject = cv2.findContours(
+	#     imgray_subject, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
+	# source_image_copy1 = source_img.copy()
+	# source_image_copy2 = source_img.copy()
+
+	cv2.drawContours(source_img, contours_diff, -1, (0, 255, 0), 1)
+	cv2.drawContours(subject_img, contours_diff, -1, (255, 0, 0), 1)
 	return (diff_img, source_img, subject_img)
 
 '''
