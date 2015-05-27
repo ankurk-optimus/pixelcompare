@@ -20,6 +20,8 @@ def readInputFile(file_name):
     return data
 
 
+
+
 def create_json_response(status, error_code, message=None, data=None):
     """
 	Convert result object to a JSON web response.

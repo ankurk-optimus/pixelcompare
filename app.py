@@ -4,6 +4,7 @@ import json
 import api.api as api
 import api.prjinit as prjinit
 import api.diff as diff
+import shutil
 
 app = Flask(__name__)
 
@@ -124,7 +125,7 @@ def upload(project_name):
 
     d = os.path.dirname(file_path)
     if not os.path.exists(d):
-    	os.makedirs(d)
+        os.makedirs(d)
 
     uploaded_File.save(file_path)
     if os.path.isfile(file_path):
@@ -133,9 +134,11 @@ def upload(project_name):
         }
 
         if img_type is 'source':
-            output['path'] = api.source_file_path(PRJ_ROOT, project_name, img_page_name, img_device, True)
+            output['path'] = api.source_file_path(
+                PRJ_ROOT, project_name, img_page_name, img_device, True)
         else:
-            output['path'] = api.screenshot_file_path(PRJ_ROOT, project_name, img_page_name, img_device, True)
+            output['path'] = api.screenshot_file_path(
+                PRJ_ROOT, project_name, img_page_name, img_device, True)
 
         return api.create_json_response("success", 0, data=output)
     else:
@@ -152,7 +155,7 @@ def compare(project_name, page_name, device):
         return api.create_json_response("failure", -1, message="Screenshot image does not exist")
 
     diff_img, source_img, subject_img = diff.compare(api.source_file_path(
-        PRJ_ROOT, project_name, page_name, device),api.screenshot_file_path(PRJ_ROOT, project_name, page_name, device))
+        PRJ_ROOT, project_name, page_name, device), api.screenshot_file_path(PRJ_ROOT, project_name, page_name, device))
 
     diff.write(diff_img, api.diff_file_path(
         PRJ_ROOT, project_name, page_name, device))
@@ -162,26 +165,27 @@ def compare(project_name, page_name, device):
         PRJ_ROOT, project_name, page_name, device))
 
     error_code = 0
-    error_message=""
+    error_message = ""
     if os.path.isfile(api.diff_file_path(
-        PRJ_ROOT, project_name, page_name, device)) is False:
+            PRJ_ROOT, project_name, page_name, device)) is False:
         error_code = -1
         error_message = error_message + "Difference file could not be created."
 
     if os.path.isfile(api.contourOnSource_file_path(
-        PRJ_ROOT, project_name, page_name, device)) is False:
+            PRJ_ROOT, project_name, page_name, device)) is False:
         error_code = -1
-        error_message = error_message + "Countour on source file could not be created."
+        error_message = error_message + \
+            "Countour on source file could not be created."
 
     if os.path.isfile(api.contourOnSource_file_path(
-        PRJ_ROOT, project_name, page_name, device)) is False:
+            PRJ_ROOT, project_name, page_name, device)) is False:
         error_code = -1
-        error_message = error_message + "Countour on subject file could not be created."
+        error_message = error_message + \
+            "Countour on subject file could not be created."
 
     if error_code is -1:
-        return api.create_json_response("failure", -1, message = error_message)
+        return api.create_json_response("failure", -1, message=error_message)
     else:
-
         output = {
             'contourOnSubject': None,
             'contourOnSource': None,
@@ -192,9 +196,134 @@ def compare(project_name, page_name, device):
         output['contourOnSubject'] = api.contourOnSubject_file_path(
             PRJ_ROOT, project_name, page_name, device, True)
         output['diff'] = api.diff_file_path(
-                PRJ_ROOT, project_name, page_name, device, True)
+            PRJ_ROOT, project_name, page_name, device, True)
 
-        return api.create_json_response("success", 0, data = output)
+        return api.create_json_response("success", 0, data=output)
+
+@app.route("/add_test_case/<project_name>", methods=['POST'])
+def add_test_case(project_name):
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+    request_data = json.loads(request.data)
+    config_data = api.readInputFile(api.config_file_path(PRJ_ROOT, project_name))
+    new_page = {
+        'pageName':request_data['pageName'],
+        'pageUrl':request_data['pageUrl'],
+        'devices':None
+    }
+    config_data['subject'].append(new_page)
+    f = open(api.config_file_path(PRJ_ROOT, project_name),'w')
+    f.write(json.dumps(config_data))
+    f.close()
+    return api.create_json_response("success", 0, message="Test case added.")
+
+@app.route("/delete_test_case/<project_name>", methods=['POST'])
+def delete_test_case(project_name):
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+    request_data = json.loads(request.data)
+    page_name = request_data['pageName']
+    config_data = api.readInputFile(api.config_file_path(PRJ_ROOT, project_name))
+    index=0
+    print page_name
+    for page in config_data['subject']:
+        if page['pageName'] == page_name:
+            config_data['subject'].pop(index)
+            print page['pageName']
+            break
+        index=index+1
+    f = open(api.config_file_path(PRJ_ROOT, project_name),'w')
+    f.write(json.dumps(config_data))
+    f.close()
+
+    source_folder_path = PRJ_ROOT + project_name + '/input/source/' + page_name
+    if os.path.isdir(source_folder_path):
+        shutil.rmtree(source_folder_path)
+
+    screenshot_folder_path = PRJ_ROOT + project_name + '/input/screenshots/' + page_name
+    if os.path.isdir(screenshot_folder_path):
+        shutil.rmtree(screenshot_folder_path)
+
+    output_folder_path = PRJ_ROOT + project_name + '/output/' + page_name
+    if os.path.isdir(output_folder_path):
+        shutil.rmtree(output_folder_path)
+
+    return api.create_json_response("success", 0, message="Test case deleted.")
+
+@app.route("/delete_test_device/<project_name>", methods=['POST'])
+def delete_test_device(project_name):
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+    request_data = json.loads(request.data)
+    page_name = request_data['pageName']
+    device_name = request_data['device']
+    config_data = api.readInputFile(api.config_file_path(PRJ_ROOT, project_name))
+    for page in config_data['subject']:
+        if page['pageName'] == page_name:
+            index = 0
+            for device in page['devices']:
+                if device == device_name:
+                    page['devices'].pop(index)
+                    break
+                index = index+1
+    f = open(api.config_file_path(PRJ_ROOT, project_name),'w')
+    f.write(json.dumps(config_data))
+    f.close()
+
+    source_file_path = api.source_file_path(PRJ_ROOT, project_name, page_name, device_name)
+    if os.path.isfile(source_file_path):
+        os.remove(source_file_path)
+
+    screenshot_file_path = api.screenshot_file_path(PRJ_ROOT, project_name, page_name, device_name)
+    if os.path.isfile(screenshot_file_path):
+        os.remove(screenshot_file_path)
+
+    output_folder_path = PRJ_ROOT + project_name + '/output/' + page_name + '/' + device_name
+    if os.path.isdir(output_folder_path):
+        shutil.rmtree(output_folder_path)
+    return api.create_json_response("success", 0, message="Test device deleted.")
+
+@app.route("/add_valid_device/<project_name>", methods=['POST'])
+def add_valid_device(project_name):
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+    request_data = json.loads(request.data)
+    new_device={
+        'deviceName':request_data['newDevice'],
+        'width':request_data['width'],
+        'height':request_data['height']
+    }
+    devices_data = api.readInputFile(api.devices_file_path(PRJ_ROOT, project_name))
+    devices_data[request_data['newDevice']] = new_device
+    f = open(api.devices_file_path(PRJ_ROOT, project_name),'w')
+    f.write(json.dumps(devices_data))
+    f.close()
+    return api.create_json_response("success", 0, message="Device added to valid devices list.")
+
+@app.route("/add_test_device/<project_name>", methods=['POST'])
+def add_test_device(project_name):
+    if os.path.isdir(PRJ_ROOT + project_name) is False:
+        return api.create_json_response("failure", -1, message="Project does not exist.")
+    request_data = json.loads(request.data)
+    device_to_add = request_data['device']
+    page_name = request_data['pageName']
+    devices_data = api.readInputFile(api.devices_file_path(PRJ_ROOT, project_name))
+    if devices_data['device_to_add'] is None:
+        return api.create_json_response("failure", -1, message="Not a valid device.")
+
+    config_data = api.readInputFile(api.config_file_path(PRJ_ROOT, project_name))
+    for page in config_data['subject']:
+        if page['pageName'] == page_name:
+            if device_to_add not in page['devices']:
+                page['devices'].append(device_to_add)
+                break
+            else:
+                return api.create_json_response("failure", -1, message="Testcase already contains this device.")
+    f = open(api.config_file_path(PRJ_ROOT, project_name),'w')
+    f.write(json.dumps(config_data))
+    f.close()
+    return api.create_json_response("success", 0, message="Device added to test case.")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
