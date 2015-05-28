@@ -1,6 +1,6 @@
 'use strict';
 
-Tests.factory("TestsFactory", function($q, $http, $location) {
+Tests.factory("TestsFactory", function($q, $http, $location, $rootScope) {
 
 	var factory = {};
 
@@ -8,7 +8,7 @@ Tests.factory("TestsFactory", function($q, $http, $location) {
 		var deferred = $q.defer();
 		$http({
 			method: 'GET',
-			url: 'http://localhost:5000/testcases/' + projectName,
+			url: $rootScope.baseUrl + 'testcases/' + projectName,
 			headers: {
 				'Content-Type': 'application/json',
 			},
@@ -30,7 +30,7 @@ Tests.factory("TestsFactory", function($q, $http, $location) {
 		var deferred = $q.defer();
 		$http({
 			method: 'GET',
-			url: 'http://localhost:5000/compare/' + projectName + '/' + pageName + '/' + device,
+			url: $rootScope.baseUrl + 'compare/' + projectName + '/' + pageName + '/' + device,
 			headers: {
 				'Content-Type': 'application/json',
 			},

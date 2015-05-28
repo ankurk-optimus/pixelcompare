@@ -40,6 +40,10 @@
 		.otherwise({
 			redirectTo: '/404'
 		});
-
 	}]);
+
+    PixelCompareApp.run(['$rootScope', '$location', function($rootScope, $location){
+        $rootScope.baseUrl = $location.$$absUrl;
+    }]);
+
  })();

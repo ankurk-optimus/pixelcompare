@@ -1,6 +1,6 @@
 'use strict';
 
-HomeModule.factory("HomeFactory", function($q, $http, $location){
+HomeModule.factory("HomeFactory", function($q, $http, $location, $rootScope){
 
 	var factory = {};
 
@@ -8,7 +8,7 @@ HomeModule.factory("HomeFactory", function($q, $http, $location){
 		var deferred = $q.defer();
 		$http({
             method: 'GET',
-            url: 'http://localhost:5000/projects',
+            url: $rootScope.baseUrl + 'projects',
             headers: {
                 'Content-Type': 'application/json',
             },
